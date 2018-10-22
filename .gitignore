@@ -103,4 +103,8 @@ ENV/
 .DS_Store
 MNIST_data/
 .idea
+idea/
+*.pyc
+*.h5
+*.hdf5
 logs

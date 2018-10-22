@@ -1,5 +1,6 @@
 """
 Implements Recurrent Attention Model (RAM) based on [1]
+
 [1] Mnih et al. 2014. Recurrent Attention Model.
 """
 
@@ -126,7 +127,7 @@ class RAM(object):
                 self.class_prob_arr.append(tf.nn.softmax(self.glimpse_logit))
 
             self.class_prob_arr = tf.stack(self.class_prob_arr, axis=1)
-
+            # [batch_size x num_glimpses x n_classes]
         # Losses/reward
 
         # cross-entropy
@@ -257,7 +258,8 @@ class RAM(object):
             self.logger.log('train', feed_dict=feed_dict)
 
             # evaluation on test/validation
-            if i and i % (2 * self.training_steps_per_epoch) == 0:
+            # if i and i % (2 * self.training_steps_per_epoch) == 0:
+            if i and i % 1000 == 0:
                 # save model
                 self.logger.save()
                 print '\n==== Evaluation: (step {}) ===='.format(i)
@@ -314,12 +316,12 @@ class RAM(object):
         labels = data.test.labels
 
         # test model
-        if task['variant'] == 'translated':
-            X = translate(X, width=task['width'], height=task['width'])
-        elif task['variant'] == 'cluttered':
-            X = clutter(X, X, width=task['width'], height=task['width'], n_patches=task['n_distractors'])
-        else:
-            print 'Using original MNIST data.'
+        # if task['variant'] == 'translated':
+        #     X = translate(X, width=task['width'], height=task['width'])
+        # elif task['variant'] == 'cluttered':
+        #     X = clutter(X, X, width=task['width'], height=task['width'], n_patches=task['n_distractors'])
+        # else:
+        #     print 'Using original MNIST data.'
 
         # sample random subset of data
         idx = np.random.permutation(X.shape[0])[:N]
